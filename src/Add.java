@@ -5,7 +5,7 @@
  * <p>Extends {@link AbstractCommand} to utilise shared validation logic,
  * specifically for validating the email parameter.</p>
  */
-public class Add extends AbstractCommand implements Command {
+public class AddCommand extends AbstractCommand implements Command {
 
     /** Parameters required for the add operation. */
     private final String[] params;
@@ -24,7 +24,7 @@ public class Add extends AbstractCommand implements Command {
      * @throws IllegalArgumentException if the email parameter (params[2]) is
      *                                  invalid
      */
-    public Add(Receiver receiver, String[] params) {
+    public AddCommand(Receiver receiver, String[] params) {
         this.receiver = receiver;
         if (!AbstractCommand.validate_email(params[2])) {
             throw new IllegalArgumentException("Invalid email.");
@@ -33,11 +33,11 @@ public class Add extends AbstractCommand implements Command {
     }
 
     /**
-     * Executes the add command by invoking the {@code Add} method on the
+     * Executes the add command by invoking the {@code add} method on the
      * receiver with the stored parameters.
      */
     @Override
     public void execute() {
-        this.receiver.Add(params);
+        this.receiver.add(params);
     }
 }
