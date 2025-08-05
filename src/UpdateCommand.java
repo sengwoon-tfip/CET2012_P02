@@ -37,9 +37,36 @@ public class UpdateCommand implements Command {
     /**
      * Executes the update command by invoking the {@code update} method on the
      * receiver with the stored parameters.
+     * <p>
+     * Also stores the original data so it can be restored if {@code undo()} is
+     * called.
+     * </p>
      */
     @Override
     public void execute() {
-        this.receiver.update(params);
+        int index = Integer.parseInt(params[0]) - 1;
+
+        // Make a deep copy of the existing data before update
+        previousData = receiver.getEntry(index).clone();
+
+        receiver.update(params);
+    }
+
+    /**
+     * Undoes the update operation by restoring the original data at the
+     * specified index using the previously backed-up state.
+     */
+    @Override
+    public void undo() {
+        int index = Integer.parseInt(params[0]) - 1;
+
+        // Convert previousData into a params-style update for receiver
+        String[] undoParams = new String[4];
+        undoParams[0] = String.valueOf(index + 1); // index as 1-based string
+        System.arraycopy(
+                previousData, 0, undoParams, 1, 3)
+        ;
+        
+        receiver.update(undoParams);
     }
 }
