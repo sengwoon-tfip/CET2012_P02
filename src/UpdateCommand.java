@@ -13,6 +13,9 @@ public class UpdateCommand implements Command {
     /** The receiver that actually performs the update operation. */
     private final Receiver receiver;
 
+    /** Backup of the data before the update, used for undo. */
+    private String[] previousData;
+
     /**
      * Constructs an Update command with the specified receiver and parameters.
      * If an email is provided (as the fourth element in the array), it is
@@ -47,7 +50,7 @@ public class UpdateCommand implements Command {
         int index = Integer.parseInt(params[0]) - 1;
 
         // Make a deep copy of the existing data before update
-        previousData = receiver.getEntry(index).clone();
+        previousData = receiver.getDataEntries().get(index).clone();
 
         receiver.update(params);
     }
@@ -66,7 +69,7 @@ public class UpdateCommand implements Command {
         System.arraycopy(
                 previousData, 0, undoParams, 1, 3)
         ;
-        
+
         receiver.update(undoParams);
     }
 }
