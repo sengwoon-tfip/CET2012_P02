@@ -37,4 +37,17 @@ public class AddCommand implements Command {
     public void execute() {
         this.receiver.add(params);
     }
+
+    /**
+     * Reverts the last add operation by removing the most recently added entry
+     * from the receiver's data store.
+     *
+     * <p>This effectively undoes the effect of the {@link #execute()} method,
+     * assuming that the corresponding {@code add} operation appended a new
+     * entry at the end of the data store.</p>
+     */
+    @Override
+    public void undo() {
+        receiver.getDataEntries().remove(receiver.getDataEntries().size() - 1);
+    }
 }
