@@ -22,6 +22,17 @@ public class Receiver {
     }
 
     /**
+     * Method to add a line composed of multiple string values joined by spaces
+     * at the end of the data array.
+     *
+     * @param values Array of string values to be joined and added as one line
+     */
+    public void add(String[] values) {
+        String line = String.join(" ", values);
+        dataEntries.add(line);
+    }
+
+    /**
      * Lists out the entries within dataEntries array list.
      */
     public void list() {
@@ -54,17 +65,19 @@ public class Receiver {
         if (dataEntries != null) {
             Command lastCommand = this.history.pop();
             lastCommand.undo();
+            // remove undo command from history
+            this.history.pop();
         }
     }
 
     /**
-     * Method to add deleted line back into the data array based on index
+     * Method to add a line back into the data array at the specified index.
      *
-     * @param index Index at which the entry was deleted
-     * @param deletedLine String value of entry that was deleted
+     * @param index Index at which the entry should be inserted
+     * @param entry String value of the entry to insert
      */
-    public void indexAdd (int index, String deletedLine) {
-        dataEntries.add(index, deletedLine);
+    public void insertAtIndex(int index, String entry) {
+        dataEntries.add(index, entry);
     }
 
     /**
