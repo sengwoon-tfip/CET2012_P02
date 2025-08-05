@@ -1,7 +1,7 @@
-public class Undo implements Command {
+public class UndoCommand implements Command {
     private Receiver receiver;
 
-    public Undo(Receiver receiver) {
+    public UndoCommand(Receiver receiver) {
         this.receiver = receiver;
     }
 

@@ -49,12 +49,16 @@ public class Receiver {
      * @return Returns the deleted string for storage
      */
     public String delete(int index) {
-        if (!dataEntries.isEmpty()) {
-            return dataEntries.remove(index);
-        }
-        else {
+        if (dataEntries.isEmpty()) {
             System.out.println("No entries to delete");
             return "";
+        } else {
+            if (index >= dataEntries.size()) {
+                System.out.println("Index out of bounds");
+                return "";
+            } else {
+                return dataEntries.remove(index);
+            }
         }
     }
 

@@ -1,6 +1,4 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -22,9 +20,9 @@ public class Main {
 
         Invoker invoker = new Invoker();
         Receiver rcvr = new Receiver(dataEntries);
-        List list = new List(rcvr);
-        Delete delete = new Delete(rcvr, 3);
-        Undo undo = new Undo(rcvr);
+        ListCommand list = new ListCommand(rcvr);
+        DeleteCommand delete = new DeleteCommand(rcvr, 3);
+        UndoCommand undo = new UndoCommand(rcvr);
         Command[] commands = {add, update, delete, undo, list};
         invoker.setCommandsForExecution(commands);
 

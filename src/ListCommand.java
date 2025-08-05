@@ -1,8 +1,8 @@
 
-public class List implements Command {
+public class ListCommand implements Command {
     private Receiver receiver;
 
-    public List(Receiver receiver) {
+    public ListCommand(Receiver receiver) {
         this.receiver = receiver;
     }
 

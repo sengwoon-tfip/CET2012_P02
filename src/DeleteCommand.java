@@ -1,9 +1,9 @@
-public class Delete implements Command {
+public class DeleteCommand implements Command {
     private Receiver receiver;
     private int index;
     private String deletedLine;
 
-    public Delete(Receiver receiver, int index) {
+    public DeleteCommand(Receiver receiver, int index) {
         this.index = index;
         this.receiver = receiver;
     }
