@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -61,6 +65,22 @@ public class Receiver {
      */
     public void indexAdd (int index, String deletedLine) {
         dataEntries.add(index, deletedLine);
+    }
+
+    /**
+     * Stores the modified data entries and overwrites previous dataStore file
+     */
+    public void storeToFile() {
+        String filename = "dataStore.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            for (String line : dataEntries) {
+                bw.write(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found." + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error writing file." + e.getMessage());
+        }
     }
 
     /**
