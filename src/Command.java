@@ -13,4 +13,11 @@ public interface Command {
      * the specific action that occurs when this method is called.</p>
      */
     void execute();
+
+    /**
+     * Undo current command.
+     * <p> Implementing classes need to define specific undo
+     * operations to be carried out </p>
+     */
+    void undo();
 }
