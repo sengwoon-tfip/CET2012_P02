@@ -2,10 +2,10 @@
  * Concrete command that performs an update operation by delegating to a
  * {@link Receiver}.
  *
- * <p>Extends {@link AbstractCommand} to utilise shared validation logic,
+ * <p>Utilises shared validation logic from {@link Utils},
  * specifically for validating the email parameter if it is provided.</p>
  */
-public class UpdateCommand extends AbstractCommand implements Command {
+public class UpdateCommand implements Command {
 
     /** Parameters required for the update operation. */
     private final String[] params;
@@ -16,7 +16,7 @@ public class UpdateCommand extends AbstractCommand implements Command {
     /**
      * Constructs an Update command with the specified receiver and parameters.
      * If an email is provided (as the fourth element in the array), it is
-     * validated using the inherited email validation method.
+     * validated using the Utils email validation method.
      *
      * @param receiver the receiver that will perform the update operation
      * @param params the parameters to be passed to the receiver's update
@@ -27,7 +27,7 @@ public class UpdateCommand extends AbstractCommand implements Command {
     public UpdateCommand(Receiver receiver, String[] params) {
         this.receiver = receiver;
         if (params.length > 3) {
-            if (!AbstractCommand.validate_email(params[3])) {
+            if (!Utils.validate_email(params[3])) {
                 throw new IllegalArgumentException("Invalid email.");
             }
         }
