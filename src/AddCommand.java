@@ -48,6 +48,6 @@ public class AddCommand implements Command {
      */
     @Override
     public void undo() {
-        receiver.getDataEntries().remove(receiver.getDataEntries().size() - 1);
+        receiver.delete(receiver.getDataEntries().size() - 1);
     }
 }
