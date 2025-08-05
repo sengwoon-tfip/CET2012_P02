@@ -22,6 +22,6 @@ public class Delete implements Command {
      */
     @Override
     public void undo() {
-        this.receiver.indexAdd(this.index, this.deletedLine);
+        this.receiver.insertAtIndex(this.index, this.deletedLine);
     }
 }
