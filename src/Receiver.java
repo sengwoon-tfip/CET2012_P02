@@ -21,7 +21,9 @@ public class Receiver {
      * Lists out the entries within dataEntries array list.
      */
     public void list() {
-        System.out.println(dataEntries);
+        for (int i = 1; i <= this.dataEntries.size(); i++) {
+            System.out.println(i + ". " + this.dataEntries.get(i));
+        }
     }
 
     /**

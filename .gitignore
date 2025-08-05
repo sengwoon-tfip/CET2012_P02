@@ -1,6 +1,12 @@
 ### Ignore dataStore.txt inside src
 /src/dataStore.txt
 
+### Ignore CET2012_P02.iml
+/src/CET2012_P02.iml
+
+### Ignore idea
+/src/.idea/
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
