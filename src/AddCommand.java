@@ -1,11 +1,10 @@
 /**
- * Concrete command that performs an add operation by delegating to a
- * {@link Receiver}.
+ * Concrete command that performs an add operation by delegating to a {@link Receiver}.
  *
- * <p>Extends {@link AbstractCommand} to utilise shared validation logic,
+ * <p>Utilises shared validation logic from {@link Utils},
  * specifically for validating the email parameter.</p>
  */
-public class AddCommand extends AbstractCommand implements Command {
+public class AddCommand implements Command {
 
     /** Parameters required for the add operation. */
     private final String[] params;
@@ -15,18 +14,16 @@ public class AddCommand extends AbstractCommand implements Command {
 
     /**
      * Constructs an Add command with the specified receiver and parameters.
-     * Validates the email at index 2 of the params array using the inherited
-     * validation method.
+     * Validates the email at index 2 of the params array using {@link Utils}.
      *
      * @param receiver the receiver that will perform the add operation
      * @param params the parameters to be passed to the receiver's add method;
      *               expects exactly 3 elements
-     * @throws IllegalArgumentException if the email parameter (params[2]) is
-     *                                  invalid
+     * @throws IllegalArgumentException if the email parameter (params[2]) is invalid
      */
     public AddCommand(Receiver receiver, String[] params) {
         this.receiver = receiver;
-        if (!AbstractCommand.validate_email(params[2])) {
+        if (!Utils.validate_email(params[2])) {
             throw new IllegalArgumentException("Invalid email.");
         }
         this.params = params;
