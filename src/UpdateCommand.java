@@ -28,12 +28,12 @@ public class UpdateCommand implements Command {
      * @throws IllegalArgumentException if an email is provided and it is
      * invalid
      */
-    public UpdateCommand(Receiver receiver, String params) {
+    public UpdateCommand(Receiver receiver, String params) throws InvalidInputException {
         this.receiver = receiver;
         String[] inputs = params.split(" ");
         if (inputs.length > 3) {
             if (!Utils.validate_email(inputs[3])) {
-                throw new IllegalArgumentException("Invalid email.");
+                throw new InvalidInputException("Invalid email format.");
             }
         }
         this.params = params;

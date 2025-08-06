@@ -21,11 +21,14 @@ public class AddCommand implements Command {
      *               expects exactly 3 elements
      * @throws IllegalArgumentException if the email parameter (params[2]) is invalid
      */
-    public AddCommand(Receiver receiver, String params) {
+    public AddCommand(Receiver receiver, String params) throws InvalidInputException {
         this.receiver = receiver;
         String[] inputs = params.split(" ");
+        if (inputs.length != 3) {
+            throw new InvalidInputException("Invalid number of parameters.");
+        }
         if (!Utils.validate_email(inputs[2])) {
-            throw new IllegalArgumentException("Invalid email.");
+            throw new InvalidInputException("Invalid email format.");
         }
         this.params = params;
     }
