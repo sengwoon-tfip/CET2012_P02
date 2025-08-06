@@ -8,13 +8,13 @@
 public class UpdateCommand implements Command {
 
     /** Parameters required for the update operation. */
-    private final String[] params;
+    private final String params;
 
     /** The receiver that actually performs the update operation. */
     private final Receiver receiver;
 
     /** Backup of the data before the update, used for undo. */
-    private String[] previousData;
+    private String previousData;
 
     /**
      * Constructs an Update command with the specified receiver and parameters.
@@ -23,14 +23,16 @@ public class UpdateCommand implements Command {
      *
      * @param receiver the receiver that will perform the update operation
      * @param params the parameters to be passed to the receiver's update
-     *               method; if provided, the email must be at index 3 and valid
-     * @throws IllegalArgumentException if an email is provided
-     *                                  (params.length > 3) and it is invalid
+     *               method; if provided, the email must be the third data item
+     *               and valid
+     * @throws IllegalArgumentException if an email is provided and it is
+     * invalid
      */
-    public UpdateCommand(Receiver receiver, String[] params) {
+    public UpdateCommand(Receiver receiver, String params) {
         this.receiver = receiver;
-        if (params.length > 3) {
-            if (!Utils.validate_email(params[3])) {
+        String[] inputs = params.split(" ");
+        if (inputs.length > 3) {
+            if (!Utils.validate_email(inputs[3])) {
                 throw new IllegalArgumentException("Invalid email.");
             }
         }
@@ -47,12 +49,16 @@ public class UpdateCommand implements Command {
      */
     @Override
     public void execute() {
-        int index = Integer.parseInt(params[0]) - 1;
-
-        // Make a deep copy of the existing data before update
-        previousData = receiver.getDataEntries().get(index).clone();
-
-        receiver.update(params);
+        String[] inputs = params.split(" ");
+        int index = Integer.parseInt(inputs[0]) - 1;
+        // Make a copy of the existing data before update
+        this.previousData = receiver.getDataEntries().get(index);
+        String[] newData = new String[inputs.length - 1];
+        System.arraycopy(
+                inputs, 1, newData, 0, inputs.length - 1
+        );
+        receiver.update(index, newData);
+        System.out.println("Entry updated successfully.");
     }
 
     /**
@@ -61,15 +67,9 @@ public class UpdateCommand implements Command {
      */
     @Override
     public void undo() {
-        int index = Integer.parseInt(params[0]) - 1;
-
-        // Convert previousData into a params-style update for receiver
-        String[] undoParams = new String[4];
-        undoParams[0] = String.valueOf(index + 1); // index as 1-based string
-        System.arraycopy(
-                previousData, 0, undoParams, 1, 3)
-        ;
-
-        receiver.update(undoParams);
+        String[] inputs = params.split(" ");
+        int index = Integer.parseInt(inputs[0]) - 1;
+        receiver.update(index, this.previousData.split(" "));
+        System.out.println("Undo command for update executed successfully.");
     }
 }

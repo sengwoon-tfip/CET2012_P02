@@ -1,23 +1,24 @@
+import java.io.File;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Receiver {
     private final ArrayList<String> dataEntries;
     private Stack<Command> history;
-    public Receiver(ArrayList<String> dataEntries) {
-        this.dataEntries = dataEntries;
+    private String filepath = "src/dataStore.txt";
+
+    public Receiver() {
+        this.dataEntries = new ArrayList<>();
+        this.history = new Stack<Command>();
+        this.loadFromFile();
     }
 
-    /**
-     * Sets the command history stack in case of undo operations.
-     *
-     * @param history Initialize history variable with command stacks
-     */
     public void setHistory(Stack<Command> history) {
         this.history = history;
     }
@@ -26,10 +27,9 @@ public class Receiver {
      * Method to add a line composed of multiple string values joined by spaces
      * at the end of the data array.
      *
-     * @param values Array of string values to be joined and added as one line
+     * @param line Line to be added
      */
-    public void add(String[] values) {
-        String line = String.join(" ", values);
+    public void add(String line) {
         dataEntries.add(line);
     }
 
@@ -37,22 +37,19 @@ public class Receiver {
      * Updates an existing employee entry at the given index using the provided
      * parameters.
      *
-     * @param params Array of strings in the format:
+     * @param inputs Array of strings in the format:
      *               [index, data1?, data2?, data3?]
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public void update(String[] params) {
-        if (params.length < 2) {
+    public void update(int index, String[] inputs) {
+        if (inputs.length < 1) {
             System.out.println("Error: Not enough parameters for update.");
             return;
         }
-        if (params.length > 4) {
+        if (inputs.length > 3) {
             System.out.println("Error: Too many parameters for update.");
             return;
         }
-
-        // Convert 1-based to 0-based index
-        int index = Integer.parseInt(params[0]) - 1;
 
         if (index < 0 || index >= this.dataEntries.size()) {
             System.out.println("Error: Index out of bounds.");
@@ -61,32 +58,28 @@ public class Receiver {
 
         // Split entry into fields
         String[] fields = this.dataEntries.get(index).split(" ", -1);
-        // Assume three fields: Name, Dept, Email
-        // Pad to three fields if missing parts
-        fields = Arrays.copyOf(fields, 3);
 
         // Update only provided fields (if not empty)
-        if (!params[1].isEmpty()) {
-            fields[0] = params[1];
+        if (!inputs[0].isEmpty()) {
+            fields[0] = inputs[0];
         }
-        if (params.length > 2 && !params[2].isEmpty()) {
-            fields[1] = params[2];
+        if (inputs.length > 1 && !inputs[1].isEmpty()) {
+            fields[1] = inputs[1];
         }
-        if (params.length > 3 && !params[3].isEmpty()) {
-            fields[2] = params[3].toLowerCase(); // For email, in lowercase
+        if (inputs.length > 2 && !inputs[2].isEmpty()) {
+            fields[2] = inputs[2]; // For email, in lowercase
         }
 
         // Join back and update the entry
-        this.dataEntries.set(index, String.join(",", fields));
-        System.out.println("Entry updated successfully.");
+        this.dataEntries.set(index, String.join(" ", fields));
     }
 
     /**
      * Lists out the entries within dataEntries array list.
      */
     public void list() {
-        for (int i = 1; i <= this.dataEntries.size(); i++) {
-            System.out.println(i + ". " + this.dataEntries.get(i));
+        for (int i = 0; i < this.dataEntries.size(); i++) {
+            System.out.printf("%02d. %s\n", i+1, this.dataEntries.get(i));
         }
     }
 
@@ -101,13 +94,12 @@ public class Receiver {
         if (dataEntries.isEmpty()) {
             System.out.println("No entries to delete");
             return "";
+        }
+        if (index < 0 || index >= this.dataEntries.size()) {
+            System.out.println("Error: Index out of bounds");
+            return "";
         } else {
-            if (index >= dataEntries.size()) {
-                System.out.println("Index out of bounds");
-                return "";
-            } else {
-                return dataEntries.remove(index);
-            }
+            return dataEntries.remove(index);
         }
     }
 
@@ -115,11 +107,13 @@ public class Receiver {
      * Retrieves last executed command to carry out corresponding undo operation.
      */
     public void undo() {
-        if (dataEntries != null) {
-            Command lastCommand = this.history.pop();
-            lastCommand.undo();
+        if (!this.history.isEmpty()) {
             // remove undo command from history
             this.history.pop();
+            Command lastCommand = this.history.pop();
+            lastCommand.undo();
+        } else {
+            System.out.println("No previous command to undo.");
         }
     }
 
@@ -133,14 +127,42 @@ public class Receiver {
         dataEntries.add(index, entry);
     }
 
+    public void loadFromFile() {
+        File file = new File(filepath);
+
+        try {
+            if (!file.exists()) {
+                // Create the file and leave dataEntries empty
+                if (file.createNewFile()) {
+                    System.out.println("File not found. Created new file: " +
+                            filepath);
+                } else {
+                    System.out.println("Failed to create new file.");
+                }
+                return; // skip reading — dataEntries stays empty
+            }
+
+            // File exists, read its contents
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                this.dataEntries.clear(); // Start fresh
+                String line;
+                while ((line = br.readLine()) != null) {
+                    this.dataEntries.add(line.trim());
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error handling file: " + e.getMessage());
+        }
+    }
+
     /**
      * Stores the modified data entries and overwrites previous dataStore file
      */
     public void storeToFile() {
-        String filename = "dataStore.txt";
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
             for (String line : dataEntries) {
-                bw.write(line);
+                bw.write(line + "\n");
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found." + e.getMessage());

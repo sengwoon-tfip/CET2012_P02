@@ -14,7 +14,8 @@ public class DeleteCommand implements Command {
      */
     @Override
         public void execute() {
-        this.deletedLine = receiver.delete(this.index);
+        this.deletedLine = receiver.delete(this.index - 1);
+        System.out.println("Entry deleted successfully.");
     }
 
     /**
@@ -22,6 +23,7 @@ public class DeleteCommand implements Command {
      */
     @Override
     public void undo() {
-        this.receiver.insertAtIndex(this.index, this.deletedLine);
+        this.receiver.insertAtIndex(this.index - 1, this.deletedLine);
+        System.out.println("Undo command for delete executed successfully.");
     }
 }

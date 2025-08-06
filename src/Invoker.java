@@ -20,8 +20,8 @@ public class Invoker {
      */
     public void executeCommand(Stack<Command> history) {
         for (Command cmd : cmdToExecute) {
-            cmd.execute();
             history.push(cmd);
+            cmd.execute();
         }
     }
 }

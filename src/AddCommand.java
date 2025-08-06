@@ -7,7 +7,7 @@
 public class AddCommand implements Command {
 
     /** Parameters required for the add operation. */
-    private final String[] params;
+    private final String params;
 
     /** The receiver that actually performs the add operation. */
     private final Receiver receiver;
@@ -21,9 +21,10 @@ public class AddCommand implements Command {
      *               expects exactly 3 elements
      * @throws IllegalArgumentException if the email parameter (params[2]) is invalid
      */
-    public AddCommand(Receiver receiver, String[] params) {
+    public AddCommand(Receiver receiver, String params) {
         this.receiver = receiver;
-        if (!Utils.validate_email(params[2])) {
+        String[] inputs = params.split(" ");
+        if (!Utils.validate_email(inputs[2])) {
             throw new IllegalArgumentException("Invalid email.");
         }
         this.params = params;
@@ -36,6 +37,7 @@ public class AddCommand implements Command {
     @Override
     public void execute() {
         this.receiver.add(params);
+        System.out.println("Added line " + params + ".");
     }
 
     /**
@@ -49,5 +51,6 @@ public class AddCommand implements Command {
     @Override
     public void undo() {
         receiver.delete(receiver.getDataEntries().size() - 1);
+        System.out.println("Undo command for add executed successfully.");
     }
 }
