@@ -31,6 +31,9 @@ public class UpdateCommand implements Command {
     public UpdateCommand(Receiver receiver, String params) throws InvalidInputException {
         this.receiver = receiver;
         String[] inputs = params.split(" ");
+        if ((inputs.length == 0 ) || (inputs.length > 4)) {
+            throw new InvalidInputException("Invalid number of parameters.");
+        }
         if (inputs.length > 3) {
             if (!Utils.validate_email(inputs[3])) {
                 throw new InvalidInputException("Invalid email format.");
