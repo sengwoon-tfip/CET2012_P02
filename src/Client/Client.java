@@ -1,6 +1,13 @@
+package Client;
+
+import Command.*;
+import Helper.InvalidInputException;
+import Invoker.Invoker;
+import Receiver.Receiver;
+
 import java.util.Stack;
 
-public class Main {
+public class Client {
     public static void main(String[] args) throws InvalidInputException {
         Invoker invoker = new Invoker();
         Receiver rcvr = new Receiver();
@@ -11,7 +18,7 @@ public class Main {
                 rcvr, "Tom Cat tc@cat.com"
         );
         UpdateCommand update = new UpdateCommand(
-                rcvr, "1 John Dog jp.@dog.com"
+                rcvr, "1 John Dog jp@dog.com"
         );
         ListCommand list = new ListCommand(rcvr);
         DeleteCommand delete = new DeleteCommand(rcvr, 1);

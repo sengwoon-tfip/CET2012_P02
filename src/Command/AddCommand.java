@@ -1,3 +1,9 @@
+package Command;
+
+import Helper.InvalidInputException;
+import Helper.Utils;
+import Receiver.Receiver;
+
 /**
  * Concrete command that performs an add operation by delegating to a {@link Receiver}.
  *

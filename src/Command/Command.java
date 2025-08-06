@@ -1,3 +1,5 @@
+package Command;
+
 /**
  * Represents a command that can be executed.
  *

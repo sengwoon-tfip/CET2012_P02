@@ -1,3 +1,7 @@
+package Command;
+
+import Receiver.Receiver;
+
 public class DeleteCommand implements Command {
     private Receiver receiver;
     private int index;
