@@ -16,7 +16,9 @@ public class DeleteCommand implements Command {
     private final Receiver receiver;
 
     /** The index of the entry to be deleted (1-based). */
-    private int index;
+    private String index;
+
+    private int numIndex;
 
     /** Stores the deleted entry for potential restoration via undo. */
     private String deletedLine;
@@ -29,11 +31,12 @@ public class DeleteCommand implements Command {
      */
     public DeleteCommand(Receiver receiver, String index) {
         this.receiver = receiver;
-        try {
-            this.index = Integer.parseInt(index);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid index type provided");
-        }
+        this.index = index;
+//        try {
+//            this.index = Integer.parseInt(index);
+//        } catch (NumberFormatException e) {
+//            System.out.println("Invalid index type provided");
+//        }
     }
 
     /**
@@ -46,13 +49,20 @@ public class DeleteCommand implements Command {
      */
     @Override
     public void execute() {
-        this.deletedLine = receiver.delete(this.index - 1);
-        if (!deletedLine.isEmpty()) {
-            System.out.println("Entry deleted successfully.");
-        } else {
-            throw new InvalidInputException(
-                    "Error: Index out of bounds, deletion not successful."
-            );
+        try {
+            this.numIndex = Integer.parseInt(this.index);
+            this.deletedLine = receiver.delete(numIndex - 1);
+            if (!deletedLine.isEmpty()) {
+                System.out.println("Entry deleted successfully.");
+            } else {
+                throw new InvalidInputException(
+                        "Error: Index out of bounds, deletion not successful."
+                );
+            }
+        }
+        catch (NumberFormatException e) {
+            throw new InvalidInputException("Error: index provided is not a " +
+                    "number");
         }
     }
 
@@ -63,7 +73,7 @@ public class DeleteCommand implements Command {
      */
     @Override
     public void undo() {
-        this.receiver.insertAtIndex(this.index - 1, this.deletedLine);
+        this.receiver.insertAtIndex(this.numIndex - 1, this.deletedLine);
         System.out.println("Undo command for delete executed successfully.");
     }
 
