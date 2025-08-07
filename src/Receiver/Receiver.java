@@ -1,7 +1,5 @@
 package Receiver;
 
-import Command.Command;
-
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * The Receiver class manages the core data store and handles all CRUD
@@ -23,8 +20,7 @@ import java.util.Stack;
  */
 public class Receiver {
     private final ArrayList<String> dataEntries;
-    private Stack<Command> history;
-    private String filepath = "src/dataStore.txt";
+    private final String filepath = "src/dataStore.txt";
 
     /**
      * Constructs a Receiver instance, initializing data storage and loading
@@ -32,17 +28,7 @@ public class Receiver {
      */
     public Receiver() {
         this.dataEntries = new ArrayList<>();
-        this.history = new Stack<Command>();
         this.loadFromFile();
-    }
-
-    /**
-     * Sets the history stack used to track executed commands for undo.
-     *
-     * @param history the stack of executed commands
-     */
-    public void setHistory(Stack<Command> history) {
-        this.history = history;
     }
 
     /**
@@ -114,19 +100,6 @@ public class Receiver {
             return "";
         } else {
             return dataEntries.remove(index);
-        }
-    }
-
-    /**
-     * Undoes the last executed command by popping it from history and calling
-     * its undo method.
-     */
-    public void undo() {
-        if (!this.history.isEmpty()) {
-            Command lastCommand = this.history.pop();
-            lastCommand.undo();
-        } else {
-            System.out.println("No previous command to undo.");
         }
     }
 

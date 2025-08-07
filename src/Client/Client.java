@@ -30,7 +30,6 @@ public class Client {
         };
 
         invoker.setCommandsForExecution(commands);
-        rcvr.setHistory(history);
         invoker.executeCommand(history);
         rcvr.storeToFile();
     }
