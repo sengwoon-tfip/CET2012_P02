@@ -5,23 +5,34 @@ import Helper.InvalidInputException;
 
 import java.util.Stack;
 
+/**
+ * Invoker class that manages and executes commands.
+ *
+ * <p>This class holds an array of commands to be executed and maintains the
+ * history of undoable commands for potential rollback.</p>
+ */
 public class Invoker {
+
+    /** Array of Command objects scheduled for execution. */
     private Command[] cmdToExecute;
 
     /**
-     * Stores array of Command objects to be executed.
+     * Sets the commands to be executed.
      *
-     * @param commands Array of commands to be executed
+     * @param commands an array of Command objects to execute
      */
     public void setCommandsForExecution(Command[] commands) {
         this.cmdToExecute = commands;
     }
 
     /**
-     * Executes each Command object and push the executed command to history
-     * stack.
+     * Executes each command in the array and pushes undoable commands to
+     * the history stack.
      *
-     * @param history Stores stack of command executed previously
+     * <p>If a command throws an {@link InvalidInputException}, the error
+     * message is printed and execution continues with the next command.</p>
+     *
+     * @param history a stack to store successfully executed undoable commands
      */
     public void executeCommand(Stack<Command> history) {
         for (Command cmd : cmdToExecute) {
@@ -30,8 +41,7 @@ public class Invoker {
                 if (cmd.isUndoable()) {
                     history.push(cmd);
                 }
-            }
-            catch (InvalidInputException e) {
+            } catch (InvalidInputException e) {
                 System.out.println(e.getMessage());
             }
         }
