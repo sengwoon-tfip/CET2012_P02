@@ -100,7 +100,6 @@ public class Receiver {
             return "";
         }
         if (index < 0 || index >= this.dataEntries.size()) {
-            System.out.println("Error: Index out of bounds");
             return "";
         } else {
             return dataEntries.remove(index);
@@ -112,8 +111,6 @@ public class Receiver {
      */
     public void undo() {
         if (!this.history.isEmpty()) {
-            // remove undo command from history
-            this.history.pop();
             Command lastCommand = this.history.pop();
             lastCommand.undo();
         } else {

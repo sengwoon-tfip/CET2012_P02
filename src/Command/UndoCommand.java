@@ -22,4 +22,8 @@ public class UndoCommand implements Command {
     public void undo() {
         System.out.println("Undo command cannot be undone.");
     }
+
+    public boolean isUndoable() {
+        return false;
+    }
 }

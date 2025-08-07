@@ -27,15 +27,8 @@ public class AddCommand implements Command {
      *               expects exactly 3 elements
      * @throws IllegalArgumentException if the email parameter (params[2]) is invalid
      */
-    public AddCommand(Receiver receiver, String params) throws InvalidInputException {
+    public AddCommand(Receiver receiver, String params) {
         this.receiver = receiver;
-        String[] inputs = params.split(" ");
-        if (inputs.length != 3) {
-            throw new InvalidInputException("Invalid number of parameters.");
-        }
-        if (!Utils.validate_email(inputs[2])) {
-            throw new InvalidInputException("Invalid email format.");
-        }
         this.params = params;
     }
 
@@ -45,6 +38,15 @@ public class AddCommand implements Command {
      */
     @Override
     public void execute() {
+        String[] inputs = params.split(" ");
+        if (inputs.length != 3) {
+            throw new InvalidInputException("Entry addition not successful, " +
+                    "invalid number of parameters.");
+        }
+        if (!Utils.validate_email(inputs[2])) {
+            throw new InvalidInputException("Entry addition not successful, " +
+                    "invalid email format.");
+        }
         this.receiver.add(params);
         System.out.println("Added line " + params + ".");
     }
@@ -61,5 +63,10 @@ public class AddCommand implements Command {
     public void undo() {
         receiver.delete(receiver.getDataEntries().size() - 1);
         System.out.println("Undo command for add executed successfully.");
+    }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
     }
 }

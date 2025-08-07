@@ -81,4 +81,7 @@ public class UpdateCommand implements Command {
         receiver.update(index, this.previousData.split(" "));
         System.out.println("Undo command for update executed successfully.");
     }
+    public boolean isUndoable() {
+        return true;
+    }
 }

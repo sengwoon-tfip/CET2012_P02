@@ -1,5 +1,7 @@
 package Command;
 
+
+
 /**
  * Represents a command that can be executed.
  *
@@ -22,4 +24,6 @@ public interface Command {
      * operations to be carried out </p>
      */
     void undo();
+
+    boolean isUndoable();
 }

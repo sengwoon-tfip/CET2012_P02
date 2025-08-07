@@ -23,4 +23,8 @@ public class ListCommand implements Command {
     public void undo() {
         System.out.println("List command cannot be undone.");
     }
+
+    public boolean isUndoable() {
+        return false;
+    }
 }
