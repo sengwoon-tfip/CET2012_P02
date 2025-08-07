@@ -6,7 +6,8 @@ package Command;
  * <p>This interface follows the Command design pattern,
  * where implementing classes encapsulate all the information needed
  * to perform an action or trigger an event. This allows for flexible
- * handling of operations such as queuing, logging, or undo/redo functionality.</p>
+ * handling of operations such as queuing, logging, or undo/redo functionality.
+ * </p>
  */
 public interface Command {
 
