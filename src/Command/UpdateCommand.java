@@ -1,7 +1,7 @@
 package Command;
 
 import Utils.InvalidInputException;
-import Utils.Utils;
+import Utils.InputValidator;
 import Receiver.Receiver;
 
 /**
@@ -29,7 +29,7 @@ public class UpdateCommand implements Command {
      * parameters.
      *
      * <p>If four parameters are provided, the fourth is assumed to be an email
-     * address and is validated using {@link Utils#validate_email(String)}.</p>
+     * address and is validated using {@link InputValidator#validate_email(String)}.</p>
      *
      * @param receiver the receiver responsible for executing the update
      * @param params a space-separated string of update parameters:
@@ -67,7 +67,7 @@ public class UpdateCommand implements Command {
                     "invalid number of parameters.");
         }
 
-        if (inputs.length == 4 && !Utils.validate_email(inputs[3])) {
+        if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])) {
             throw new InvalidInputException("Invalid email format for update " +
                     "command.");
         }

@@ -1,7 +1,7 @@
 package Command;
 
 import Utils.InvalidInputException;
-import Utils.Utils;
+import Utils.InputValidator;
 import Receiver.Receiver;
 
 /**
@@ -10,7 +10,7 @@ import Receiver.Receiver;
  *
  * <p>This class follows the Command design pattern, encapsulating the logic
  * for adding a new entry to the receiver's data store. It uses shared
- * validation utilities from {@link Utils} to ensure the email format is valid.
+ * validation utilities from {@link InputValidator} to ensure the email format is valid.
  * </p>
  */
 public class AddCommand implements Command {
@@ -27,7 +27,7 @@ public class AddCommand implements Command {
      *
      * <p>Expects exactly three space-separated values in {@code params}, with
      * the third being a valid email address. Email validation is handled using
-     * {@link Utils#validate_email(String)}.</p>
+     * {@link InputValidator#validate_email(String)}.</p>
      *
      * @param receiver the receiver responsible for executing the add operation
      * @param params space-separated string containing exactly three values:
@@ -63,7 +63,7 @@ public class AddCommand implements Command {
             throw new InvalidInputException("Entry addition not successful: " +
                     "invalid number of parameters.");
         }
-        if (!Utils.validate_email(inputs[2])) {
+        if (!InputValidator.validate_email(inputs[2])) {
             throw new InvalidInputException("Entry addition not successful: " +
                     "invalid email format.");
         }
