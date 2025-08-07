@@ -5,27 +5,40 @@ import Helper.Utils;
 import Receiver.Receiver;
 
 /**
- * Concrete command that performs an add operation by delegating to a {@link Receiver}.
+ * Concrete command that performs an add operation by delegating to a
+ * {@link Receiver}.
  *
- * <p>Utilises shared validation logic from {@link Utils},
- * specifically for validating the email parameter.</p>
+ * <p>This class follows the Command design pattern, encapsulating the logic
+ * for adding a new entry to the receiver's data store. It uses shared
+ * validation utilities from {@link Utils} to ensure the email format is valid.
+ * </p>
  */
 public class AddCommand implements Command {
 
-    /** Parameters required for the add operation. */
+    /** Parameters required for the add operation, space-separated. */
     private final String params;
 
     /** The receiver that actually performs the add operation. */
     private final Receiver receiver;
 
     /**
-     * Constructs an Add command with the specified receiver and parameters.
-     * Validates the email at index 2 of the params array using {@link Utils}.
+     * Constructs an {@code AddCommand} with the specified receiver and
+     * parameters.
      *
-     * @param receiver the receiver that will perform the add operation
-     * @param params the parameters to be passed to the receiver's add method;
-     *               expects exactly 3 elements
-     * @throws IllegalArgumentException if the email parameter (params[2]) is invalid
+     * <p>Expects exactly three space-separated values in {@code params}, with
+     * the third being a valid email address. Email validation is handled using
+     * {@link Utils#validate_email(String)}.</p>
+     *
+     * @param receiver the receiver responsible for executing the add operation
+     * @param params space-separated string containing exactly three values:
+     *               <ul>
+     *                 <li>First value: typically a name or identifier</li>
+     *                 <li>Second value: an attribute such as a role or title
+     *                 </li>
+     *                 <li>Third value: a valid email address</li>
+     *               </ul>
+     * @throws InvalidInputException if the number of parameters is not three or
+     *                               if the email format is invalid
      */
     public AddCommand(Receiver receiver, String params) {
         this.receiver = receiver;
@@ -33,18 +46,25 @@ public class AddCommand implements Command {
     }
 
     /**
-     * Executes the add command by invoking the {@code add} method on the
-     * receiver with the stored parameters.
+     * Executes the add operation by invoking the {@code add} method on the
+     * receiver.
+     *
+     * <p>Validates the input format and email before delegating the operation
+     * to the receiver. If validation fails, an {@link InvalidInputException}
+     * is thrown.</p>
+     *
+     * @throws InvalidInputException if the input is malformed or contains an
+     * invalid email
      */
     @Override
     public void execute() {
         String[] inputs = params.split(" ");
         if (inputs.length != 3) {
-            throw new InvalidInputException("Entry addition not successful, " +
+            throw new InvalidInputException("Entry addition not successful: " +
                     "invalid number of parameters.");
         }
         if (!Utils.validate_email(inputs[2])) {
-            throw new InvalidInputException("Entry addition not successful, " +
+            throw new InvalidInputException("Entry addition not successful: " +
                     "invalid email format.");
         }
         this.receiver.add(params);
@@ -52,12 +72,12 @@ public class AddCommand implements Command {
     }
 
     /**
-     * Reverts the last add operation by removing the most recently added entry
+     * Undoes the add operation by removing the most recently added entry
      * from the receiver's data store.
      *
-     * <p>This effectively undoes the effect of the {@link #execute()} method,
-     * assuming that the corresponding {@code add} operation appended a new
-     * entry at the end of the data store.</p>
+     * <p>This assumes that the add operation appends the entry to the end
+     * of the data list and that no other entries have been added since.
+     * It should only be called immediately after {@link #execute()}.</p>
      */
     @Override
     public void undo() {
@@ -65,6 +85,11 @@ public class AddCommand implements Command {
         System.out.println("Undo command for add executed successfully.");
     }
 
+    /**
+     * Indicates that this command supports undo.
+     *
+     * @return {@code true}, since the add operation can be reverted
+     */
     @Override
     public boolean isUndoable() {
         return true;
