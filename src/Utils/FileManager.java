@@ -28,8 +28,9 @@ public class FileManager {
         try {
             if (Files.notExists(filepath)) {
                 Files.createFile(filepath);
-                System.out.println("File not found. Created new file: " + filepath);
-                return null;
+                System.out.println(
+                        "File not found. Created new file: " + filepath
+                );
             }
 
             List<String> lines = Files.readAllLines(filepath);
