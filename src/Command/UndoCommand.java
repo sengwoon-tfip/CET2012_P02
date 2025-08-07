@@ -1,6 +1,6 @@
 package Command;
 
-import Receiver.Receiver;
+import java.util.Stack;
 
 /**
  * Concrete command that triggers the undo operation on the receiver.
@@ -12,27 +12,32 @@ import Receiver.Receiver;
  */
 public class UndoCommand implements Command {
 
-    /** The receiver that manages and performs undo operations. */
-    private final Receiver receiver;
+    /** The stack to contain the history of executed (undoable) commands*/
+    private final Stack<Command> history;
 
     /**
      * Constructs an {@code UndoCommand} with the specified receiver.
      *
-     * @param receiver the receiver that will perform the undo action
+     * @param history the stack to contain the history of executed commands
      */
-    public UndoCommand(Receiver receiver) {
-        this.receiver = receiver;
+    public UndoCommand(Stack<Command> history) {
+        this.history = history;
     }
 
     /**
-     * Executes the undo operation via the receiver.
+     * Executes the undo operation.
      *
-     * <p>This method delegates the undo behavior to the receiver,
-     * which should maintain a command history to support undo.</p>
+     * <p>This method undoes the last executed command by popping it from
+     * the command history and executing the previous command.</p>
      */
     @Override
     public void execute() {
-        this.receiver.undo();
+        if (!this.history.isEmpty()) {
+            Command lastCommand = this.history.pop();
+            lastCommand.undo();
+        } else {
+            System.out.println("No previous command to undo.");
+        }
     }
 
     /**

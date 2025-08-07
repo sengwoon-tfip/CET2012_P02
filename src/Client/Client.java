@@ -11,6 +11,8 @@ public class Client {
     public static void main(String[] args) throws InvalidInputException {
         Invoker invoker = new Invoker();
         Receiver rcvr = new Receiver();
+        Stack<Command> history = new Stack<Command>();
+
         AddCommand add = new AddCommand(
                 rcvr, "John Pork jo@pig.com"
         );
@@ -18,16 +20,15 @@ public class Client {
                 rcvr, "Tom Cat tc@cat.com"
         );
         UpdateCommand update = new UpdateCommand(
-                rcvr, "1 John Dog jp@dog.com"
+                rcvr, "1 John Dog jp@dog.com hhh"
         );
         ListCommand list = new ListCommand(rcvr);
         DeleteCommand delete = new DeleteCommand(rcvr, "10");
-        UndoCommand undo = new UndoCommand(rcvr);
+        UndoCommand undo = new UndoCommand(history);
         Command[] commands = {
                 add, add2, list, update, undo, list, delete, undo, undo
         };
 
-        Stack<Command> history = new Stack<Command>();
         invoker.setCommandsForExecution(commands);
         rcvr.setHistory(history);
         invoker.executeCommand(history);
