@@ -25,7 +25,8 @@ public class UpdateCommand implements Command {
     private String previousData;
 
     /**
-     * Constructs an {@code UpdateCommand} with the specified receiver and parameters.
+     * Constructs an {@code UpdateCommand} with the specified receiver and
+     * parameters.
      *
      * <p>If four parameters are provided, the fourth is assumed to be an email
      * address and is validated using {@link Utils#validate_email(String)}.</p>
@@ -33,13 +34,16 @@ public class UpdateCommand implements Command {
      * @param receiver the receiver responsible for executing the update
      * @param params a space-separated string of update parameters:
      *               <ul>
-     *                 <li>First element: index of the entry to update (1-based)</li>
+     *                 <li>First element: index of the entry to update (1-based)
+     *                 </li>
      *                 <li>Following elements: new data values</li>
-     *                 <li>Optional fourth element: email, which must be valid if present</li>
+     *                 <li>Optional fourth element: email, which must be valid
+     *                 if present</li>
      *               </ul>
      * @throws InvalidInputException if the email is present but invalid
      */
-    public UpdateCommand(Receiver receiver, String params) throws InvalidInputException {
+    public UpdateCommand(Receiver receiver, String params)
+    throws InvalidInputException {
         this.receiver = receiver;
         this.params = params;
     }
@@ -48,10 +52,12 @@ public class UpdateCommand implements Command {
      * Executes the update operation.
      *
      * <p>Parses the parameters, validates the email if present, and performs
-     * the update on the receiver. Backs up the original data to allow undoing.</p>
+     * the update on the receiver. Backs up the original data to allow undoing.
+     * </p>
      *
      * @throws InvalidInputException if the number of parameters is invalid
-     *                               or the email (if present) is not in a valid format
+     *                               or the email (if present) is not in a
+     *                               valid format
      */
     @Override
     public void execute() {
@@ -68,16 +74,20 @@ public class UpdateCommand implements Command {
         this.previousData = receiver.getDataEntries().get(index);
 
         String[] newData = new String[inputs.length - 1];
-        System.arraycopy(inputs, 1, newData, 0, inputs.length - 1);
+        System.arraycopy(
+                inputs, 1, newData, 0, inputs.length - 1
+        );
 
         receiver.update(index, newData);
         System.out.println("Entry updated successfully.");
     }
 
     /**
-     * Undoes the update operation by restoring the previous data at the specified index.
+     * Undoes the update operation by restoring the previous data at the
+     * specified index.
      *
-     * <p>Relies on the backup taken during {@link #execute()} to revert the changes.</p>
+     * <p>Relies on the backup taken during {@link #execute()} to revert the
+     * changes.</p>
      */
     @Override
     public void undo() {
