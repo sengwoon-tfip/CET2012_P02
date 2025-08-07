@@ -18,7 +18,7 @@ public class Client {
                 rcvr, "Tom Cat tc@cat.com"
         );
         UpdateCommand update = new UpdateCommand(
-                rcvr, "1 John Dog jp@dog.com"
+                rcvr, "1 John Dog jp@dog.com hhh"
         );
         ListCommand list = new ListCommand(rcvr);
         DeleteCommand delete = new DeleteCommand(rcvr, "10");
