@@ -12,38 +12,54 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * The Receiver class manages the core data store and handles all CRUD
+ * operations.
+ *
+ * <p>It maintains a list of data entries, supports undo operations via a
+ * command
+ * history stack, and handles persistence by reading from and writing to a
+ * file.</p>
+ */
 public class Receiver {
     private final ArrayList<String> dataEntries;
     private Stack<Command> history;
     private String filepath = "src/dataStore.txt";
 
+    /**
+     * Constructs a Receiver instance, initializing data storage and loading
+     * data entries from the file.
+     */
     public Receiver() {
         this.dataEntries = new ArrayList<>();
         this.history = new Stack<Command>();
         this.loadFromFile();
     }
 
+    /**
+     * Sets the history stack used to track executed commands for undo.
+     *
+     * @param history the stack of executed commands
+     */
     public void setHistory(Stack<Command> history) {
         this.history = history;
     }
 
     /**
-     * Method to add a line composed of multiple string values joined by spaces
-     * at the end of the data array.
+     * Adds a new entry line at the end of the data list.
      *
-     * @param line Line to be added
+     * @param line the string line to be added
      */
     public void add(String line) {
         dataEntries.add(line);
     }
 
     /**
-     * Updates an existing employee entry at the given index using the provided
-     * parameters.
+     * Updates the entry at the specified index with provided input fields.
+     * Only non-empty input fields overwrite existing data fields.
      *
-     * @param inputs Array of strings in the format:
-     *               [index, data1?, data2?, data3?]
-     * @throws IndexOutOfBoundsException if the index is invalid
+     * @param index  the zero-based index of the entry to update
+     * @param inputs array of strings representing fields to update (max 3)
      */
     public void update(int index, String[] inputs) {
         if (inputs.length < 1) {
@@ -54,16 +70,13 @@ public class Receiver {
             System.out.println("Error: Too many parameters for update.");
             return;
         }
-
         if (index < 0 || index >= this.dataEntries.size()) {
             System.out.println("Error: Index out of bounds.");
             return;
         }
 
-        // Split entry into fields
         String[] fields = this.dataEntries.get(index).split(" ", -1);
 
-        // Update only provided fields (if not empty)
         if (!inputs[0].isEmpty()) {
             fields[0] = inputs[0];
         }
@@ -71,28 +84,26 @@ public class Receiver {
             fields[1] = inputs[1];
         }
         if (inputs.length > 2 && !inputs[2].isEmpty()) {
-            fields[2] = inputs[2]; // For email, in lowercase
+            fields[2] = inputs[2]; // for email (could apply lowercase here)
         }
 
-        // Join back and update the entry
         this.dataEntries.set(index, String.join(" ", fields));
     }
 
     /**
-     * Lists out the entries within dataEntries array list.
+     * Prints all data entries with a numbered prefix (starting at 1).
      */
     public void list() {
         for (int i = 0; i < this.dataEntries.size(); i++) {
-            System.out.printf("%02d. %s\n", i+1, this.dataEntries.get(i));
+            System.out.printf("%02d. %s\n", i + 1, this.dataEntries.get(i));
         }
     }
 
     /**
-     * Removes the entry in the provided array list index and returns the removed
-     * entry as string.
+     * Deletes and returns the entry at the specified index.
      *
-     * @param index Position of entry to be deleted
-     * @return Returns the deleted string for storage
+     * @param index zero-based index of the entry to delete
+     * @return the deleted entry string, or empty string if invalid index
      */
     public String delete(int index) {
         if (dataEntries.isEmpty()) {
@@ -107,7 +118,8 @@ public class Receiver {
     }
 
     /**
-     * Retrieves last executed command to carry out corresponding undo operation.
+     * Undoes the last executed command by popping it from history and calling
+     * its undo method.
      */
     public void undo() {
         if (!this.history.isEmpty()) {
@@ -119,33 +131,36 @@ public class Receiver {
     }
 
     /**
-     * Method to add a line back into the data array at the specified index.
+     * Inserts an entry at the specified index in the data list.
      *
-     * @param index Index at which the entry should be inserted
-     * @param entry String value of the entry to insert
+     * @param index the zero-based position to insert the entry
+     * @param entry the string entry to insert
      */
     public void insertAtIndex(int index, String entry) {
         dataEntries.add(index, entry);
     }
 
+    /**
+     * Loads entries from the data file into the data list.
+     * Creates the file if it does not exist.
+     */
     public void loadFromFile() {
         File file = new File(filepath);
 
         try {
             if (!file.exists()) {
-                // Create the file and leave dataEntries empty
                 if (file.createNewFile()) {
-                    System.out.println("File not found. Created new file: " +
-                            filepath);
+                    System.out.println(
+                            "File not found. Created new file: " + filepath
+                    );
                 } else {
                     System.out.println("Failed to create new file.");
                 }
-                return; // skip reading — dataEntries stays empty
+                return;
             }
 
-            // File exists, read its contents
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                this.dataEntries.clear(); // Start fresh
+                this.dataEntries.clear();
                 String line;
                 while ((line = br.readLine()) != null) {
                     this.dataEntries.add(line.trim());
@@ -158,7 +173,8 @@ public class Receiver {
     }
 
     /**
-     * Stores the modified data entries and overwrites previous dataStore file
+     * Writes current data entries to the data file, overwriting previous
+     * content.
      */
     public void storeToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
@@ -166,16 +182,16 @@ public class Receiver {
                 bw.write(line + "\n");
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found." + e.getMessage());
+            System.out.println("File not found. " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("Error writing file." + e.getMessage());
+            System.out.println("Error writing file. " + e.getMessage());
         }
     }
 
     /**
-     * Getter for data entry array list to main loop
+     * Gets the list of all current data entries.
      *
-     * @return Returns data entry array list
+     * @return the list of data entries
      */
     public ArrayList<String> getDataEntries() {
         return dataEntries;
