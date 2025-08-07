@@ -1,12 +1,7 @@
 package Receiver;
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import Helper.FileManager;
+
 import java.util.ArrayList;
 
 /**
@@ -20,15 +15,13 @@ import java.util.ArrayList;
  */
 public class Receiver {
     private final ArrayList<String> dataEntries;
-    private final String filepath = "src/dataStore.txt";
 
     /**
      * Constructs a Receiver instance, initializing data storage and loading
      * data entries from the file.
      */
     public Receiver() {
-        this.dataEntries = new ArrayList<>();
-        this.loadFromFile();
+        this.dataEntries = FileManager.loadFromFile();
     }
 
     /**
@@ -111,54 +104,6 @@ public class Receiver {
      */
     public void insertAtIndex(int index, String entry) {
         dataEntries.add(index, entry);
-    }
-
-    /**
-     * Loads entries from the data file into the data list.
-     * Creates the file if it does not exist.
-     */
-    public void loadFromFile() {
-        File file = new File(filepath);
-
-        try {
-            if (!file.exists()) {
-                if (file.createNewFile()) {
-                    System.out.println(
-                            "File not found. Created new file: " + filepath
-                    );
-                } else {
-                    System.out.println("Failed to create new file.");
-                }
-                return;
-            }
-
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                this.dataEntries.clear();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    this.dataEntries.add(line.trim());
-                }
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error handling file: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Writes current data entries to the data file, overwriting previous
-     * content.
-     */
-    public void storeToFile() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
-            for (String line : dataEntries) {
-                bw.write(line + "\n");
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found. " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Error writing file. " + e.getMessage());
-        }
     }
 
     /**
