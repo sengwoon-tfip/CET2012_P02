@@ -1,8 +1,8 @@
 package Client;
 
 import Command.*;
-import Helper.InvalidInputException;
-import Helper.FileManager;
+import Utils.InvalidInputException;
+import Utils.FileManager;
 import Invoker.Invoker;
 import Receiver.Receiver;
 

@@ -1,7 +1,7 @@
 package Command;
 
 import Receiver.Receiver;
-import Helper.InvalidInputException;
+import Utils.InvalidInputException;
 
 /**
  * Concrete command that deletes an entry from the receiver's data store.

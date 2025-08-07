@@ -1,4 +1,4 @@
-package Helper;
+package Utils;
 
 /**
  * Exception thrown to indicate that user input is invalid.

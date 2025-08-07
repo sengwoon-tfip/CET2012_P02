@@ -1,4 +1,4 @@
-package Helper;
+package Utils;
 
 import java.util.regex.Pattern;
 
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * <p>This class currently provides email validation logic that checks whether
  * a given string conforms to a specific format based on company rules.</p>
  */
-public class Utils {
+public class InputValidator {
 
     /** Regex pattern used for validating email addresses. */
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
