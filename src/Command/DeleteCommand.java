@@ -4,7 +4,7 @@ import Receiver.Receiver;
 import Helper.InvalidInputException;
 
 public class DeleteCommand implements Command {
-    private Receiver receiver;
+    private final Receiver receiver;
     private int index;
     private String deletedLine;
 

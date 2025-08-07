@@ -3,7 +3,7 @@ package Command;
 import Receiver.Receiver;
 
 public class UndoCommand implements Command {
-    private Receiver receiver;
+    private final Receiver receiver;
 
     public UndoCommand(Receiver receiver) {
         this.receiver = receiver;
