@@ -53,7 +53,7 @@ public class DeleteCommand implements Command {
             this.numIndex = Integer.parseInt(this.index);
             this.deletedLine = receiver.delete(numIndex - 1);
             if (!deletedLine.isEmpty()) {
-                System.out.println("Entry deleted successfully.");
+                System.out.println("Delete");
             } else {
                 throw new InvalidInputException(
                         "Error: Index out of bounds, deletion not successful."
@@ -74,7 +74,7 @@ public class DeleteCommand implements Command {
     @Override
     public void undo() {
         this.receiver.insertAtIndex(this.numIndex - 1, this.deletedLine);
-        System.out.println("Undo command for delete executed successfully.");
+        System.out.println("Undo");
     }
 
     /**

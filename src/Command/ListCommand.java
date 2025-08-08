@@ -29,6 +29,7 @@ public class ListCommand implements Command {
      */
     @Override
     public void execute() {
+        System.out.println("List");
         this.receiver.list();
     }
 
@@ -40,7 +41,7 @@ public class ListCommand implements Command {
      */
     @Override
     public void undo() {
-        System.out.println("List command cannot be undone.");
+//        System.out.println("List command cannot be undone.");
     }
 
     /**
