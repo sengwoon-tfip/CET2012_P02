@@ -75,6 +75,12 @@ public class UpdateCommand implements Command {
      */
     @Override
     public void execute() {
+        if (params == null) {
+            throw new InvalidInputException(
+                    "Error: Input cannot be null."
+            );
+        }
+
         String[] inputs = params.split(" ");
         if (inputs.length <= 1) {
             throw new InvalidInputException(
@@ -86,7 +92,8 @@ public class UpdateCommand implements Command {
                 "Error: Too many parameters for update."
             );
         }
-        if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])) {
+        if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])
+        && !InputValidator.validate_string(inputs[3])) {
             throw new InvalidInputException(
                 "Invalid email format for update command."
             );

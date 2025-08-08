@@ -50,6 +50,11 @@ public class DeleteCommand implements Command {
     @Override
     public void execute() {
         try {
+            if (this.index == null) {
+                throw new InvalidInputException(
+                        "Error: Input cannot be null."
+                );
+            }
             this.numIndex = Integer.parseInt(this.index);
             this.deletedLine = receiver.delete(numIndex - 1);
             if (!deletedLine.isEmpty()) {

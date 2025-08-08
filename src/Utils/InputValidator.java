@@ -32,8 +32,8 @@ public class InputValidator {
             "[a-z]{2,3}" +
             "$"
     );
-    private static final Pattern EMAIL_PATTERN2 = Pattern.compile("[a-zA-Z0-9_]{1,}"
-
+    private static final Pattern STRING_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9_]{1,}"
     );
     /**
      * Validates an email address against a custom pattern.
@@ -50,11 +50,11 @@ public class InputValidator {
      *         {@code false} otherwise
      */
     public static boolean validate_email(String email) {
-        if (email == null || email.isEmpty()) return false;
+        if (email.isEmpty()) return false;
         return EMAIL_PATTERN.matcher(email).matches();
     }
-    public static boolean validate_email_string(String email) {
-        if (email == null || email.isEmpty()) return false;
-        return EMAIL_PATTERN2.matcher(email).matches();
+    public static boolean validate_string(String string) {
+        if (string.isEmpty()) return false;
+        return STRING_PATTERN.matcher(string).matches();
     }
 }

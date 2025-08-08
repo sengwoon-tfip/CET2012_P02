@@ -73,6 +73,11 @@ public class AddCommand implements Command {
      */
     @Override
     public void execute() {
+        if (params == null) {
+            throw new InvalidInputException(
+                    "Error: Input cannot be null."
+            );
+        }
         String[] inputs = params.split(" ");
         if (inputs.length != 3) {
             throw new InvalidInputException(

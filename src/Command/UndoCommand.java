@@ -2,6 +2,7 @@ package Command;
 
 import java.util.Stack;
 import Receiver.Receiver;
+import Utils.InvalidInputException;
 
 /**
  * Concrete command that triggers the undo operation on the receiver.
@@ -37,6 +38,11 @@ public class UndoCommand implements Command {
      */
     @Override
     public void execute() {
+        if (this.history == null) {
+            throw new InvalidInputException(
+                    "Error: Input cannot be null."
+            );
+        }
         if (!this.history.isEmpty()) {
             Command lastCommand = this.history.pop();
             lastCommand.undo();
