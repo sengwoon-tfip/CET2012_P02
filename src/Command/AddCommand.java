@@ -63,7 +63,7 @@ public class AddCommand implements Command {
             throw new InvalidInputException("Error: Addition not successful: " +
                     "invalid number of parameters.");
         }
-        if (!InputValidator.validate_email(inputs[2])) {
+        if ((!InputValidator.validate_email(inputs[2]) && !InputValidator.validate_email_string(inputs[2]))) {
             throw new InvalidInputException("Error: Addition not successful: " +
                     "invalid email format.");
         }

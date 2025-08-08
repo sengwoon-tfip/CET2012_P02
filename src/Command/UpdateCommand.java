@@ -62,13 +62,19 @@ public class UpdateCommand implements Command {
     @Override
     public void execute() {
         String[] inputs = params.split(" ");
-        if ((inputs.length == 0) || (inputs.length > 4)) {
+        try {
+            Integer.parseInt(inputs[0]);
+        }
+        catch (NumberFormatException e) {
+            throw new InvalidInputException("Error: first argument provided not an integer");
+        }
+        if ((inputs.length < 2) || (inputs.length > 4)) {
             throw new InvalidInputException("Error: Update command provided with " +
                     "invalid number of parameters.");
         }
 
         if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])) {
-            throw new InvalidInputException("Invalid email format for update " +
+            throw new InvalidInputException("Error: Invalid email format for update " +
                     "command.");
         }
 
