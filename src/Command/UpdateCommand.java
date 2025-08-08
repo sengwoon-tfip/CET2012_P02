@@ -3,25 +3,29 @@ package Command;
 import Utils.InvalidInputException;
 import Utils.InputValidator;
 import Receiver.Receiver;
+import Utils.WordFormatter;
 
 /**
  * Concrete command that performs an update operation by delegating to a
  * {@link Receiver}.
  *
- * <p>This command follows the Command design pattern and encapsulates
- * the logic for updating an existing entry. It uses {@link Utils}
- * for optional email validation and supports undo functionality
- * by storing the previous state before execution.</p>
+ * <p>This command follows the Command design pattern and encapsulates the
+ * logic for updating an existing entry. It optionally validates a provided
+ * email address using {@link InputValidator}. The command supports undo
+ * functionality by storing the previous state before execution.</p>
  */
 public class UpdateCommand implements Command {
 
     /** The receiver that actually performs the update operation. */
     private final Receiver receiver;
 
-    /** Parameters required for the update operation. */
+    /** Parameters required for the update operation, space-separated. */
     private final String params;
 
-    /** Backup of the data before the update, used for undo. */
+    /**
+     * Backup of the data before the update, used for undo functionality.
+     * This stores the original entry at the update index.
+     */
     private String previousData;
 
     /**
@@ -34,16 +38,14 @@ public class UpdateCommand implements Command {
      * @param receiver the receiver responsible for executing the update
      * @param params a space-separated string of update parameters:
      *               <ul>
-     *                 <li>First element: index of the entry to update (1-based)
-     *                 </li>
+     *                 <li>First element: index (1-based) of the entry to update</li>
      *                 <li>Following elements: new data values</li>
-     *                 <li>Optional fourth element: email, which must be valid
-     *                 if present</li>
+     *                 <li>Optional fourth element: email which must be valid if
+     *                     present</li>
      *               </ul>
-     * @throws InvalidInputException if the email is present but invalid
+     * @throws InvalidInputException if an email is present but invalid
      */
-    public UpdateCommand(Receiver receiver, String params)
-    throws InvalidInputException {
+    public UpdateCommand(Receiver receiver, String params) throws InvalidInputException {
         this.receiver = receiver;
         this.params = params;
     }
@@ -51,40 +53,50 @@ public class UpdateCommand implements Command {
     /**
      * Executes the update operation.
      *
-     * <p>Parses the parameters, validates the email if present, and performs
-     * the update on the receiver. Backs up the original data to allow undoing.
-     * </p>
+     * <p>This method splits the parameters, checks the count (must be between
+     * 1 and 4), validates the email (if present), then retrieves and saves
+     * the original entry to permit undo.</p>
      *
-     * @throws InvalidInputException if the number of parameters is invalid
-     *                               or the email (if present) is not in a
-     *                               valid format
+     * <p>The update data (excluding index) has the first two elements
+     * capitalised (first letter uppercase, rest lowercase) via
+     * {@link WordFormatter#capitalise(String)}.</p>
+     *
+     * <p>The update is then delegated to the receiver using the parsed index
+     * and updated data elements.</p>
+     *
+     * @throws InvalidInputException if the number of parameters is invalid or
+     *                               if the email (when provided) is in an
+     *                               invalid format
+     * @throws NumberFormatException if the first parameter is not a valid
+     *                               integer index
      */
     @Override
     public void execute() {
         String[] inputs = params.split(" ");
-        try {
-            Integer.parseInt(inputs[0]);
-        }
-        catch (NumberFormatException e) {
-            throw new InvalidInputException("Error: first argument provided not an integer");
-        }
-        if ((inputs.length < 2) || (inputs.length > 4)) {
-            throw new InvalidInputException("Error: Update command provided with " +
-                    "invalid number of parameters.");
+        if (inputs.length == 0 || inputs.length > 4) {
+            throw new InvalidInputException(
+                    "Error: Update command provided with invalid number of parameters.");
         }
 
         if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])) {
-            throw new InvalidInputException("Error: Invalid email format for update " +
-                    "command.");
+            throw new InvalidInputException(
+                    "Invalid email format for update command.");
         }
 
         int index = Integer.parseInt(inputs[0]) - 1;
         this.previousData = receiver.getDataEntries().get(index);
 
+        // Extract new data components (excluding index)
         String[] newData = new String[inputs.length - 1];
-        System.arraycopy(
-                inputs, 1, newData, 0, inputs.length - 1
-        );
+        System.arraycopy(inputs, 1, newData, 0, inputs.length - 1);
+
+        // Capitalise first two new data elements if available
+        if (newData.length > 0) {
+            newData[0] = WordFormatter.capitalise(newData[0]);
+        }
+        if (newData.length > 1) {
+            newData[1] = WordFormatter.capitalise(newData[1]);
+        }
 
         receiver.update(index, newData);
         System.out.println("Update");
@@ -96,6 +108,10 @@ public class UpdateCommand implements Command {
      *
      * <p>Relies on the backup taken during {@link #execute()} to revert the
      * changes.</p>
+     *
+     * <p>This method parses the original index from {@code params} and invokes
+     * an update on the receiver with the previously saved data split into
+     * components.</p>
      */
     @Override
     public void undo() {
