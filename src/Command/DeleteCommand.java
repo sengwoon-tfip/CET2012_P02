@@ -50,6 +50,11 @@ public class DeleteCommand implements Command {
     @Override
     public void execute() {
         try {
+            if (this.receiver == null) {
+                throw new InvalidInputException(
+                        "Error: Receiver cannot be null."
+                );
+            }
             if (this.index == null) {
                 throw new InvalidInputException(
                         "Error: Input cannot be null."

@@ -73,12 +73,17 @@ public class AddCommand implements Command {
      */
     @Override
     public void execute() {
-        if (params == null) {
+        if (this.receiver == null) {
+            throw new InvalidInputException(
+                    "Error: Receiver cannot be null."
+            );
+        }
+        if (this.params == null) {
             throw new InvalidInputException(
                     "Error: Input cannot be null."
             );
         }
-        String[] inputs = params.split(" ");
+        String[] inputs = this.params.split(" ");
         if (inputs.length != 3) {
             throw new InvalidInputException(
                     "Error: Addition not successful: invalid number of parameters.");
@@ -89,8 +94,8 @@ public class AddCommand implements Command {
         }
         inputs[0] = WordFormatter.capitalise(inputs[0]);
         inputs[1] = WordFormatter.capitalise(inputs[1]);
-        params = String.join(" ", inputs);
-        this.receiver.add(params);
+        this.params = String.join(" ", inputs);
+        this.receiver.add(this.params);
         System.out.println("Add");
     }
 

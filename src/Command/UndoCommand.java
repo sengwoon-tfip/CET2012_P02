@@ -38,6 +38,11 @@ public class UndoCommand implements Command {
      */
     @Override
     public void execute() {
+        if (this.receiver == null) {
+            throw new InvalidInputException(
+                    "Error: Receiver cannot be null."
+            );
+        }
         if (this.history == null) {
             throw new InvalidInputException(
                     "Error: Input cannot be null."

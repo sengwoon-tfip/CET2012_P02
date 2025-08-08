@@ -35,6 +35,11 @@ public class Invoker {
      * @param history a stack to store successfully executed undoable commands
      */
     public void executeCommand(Stack<Command> history) {
+        if (history == null) {
+            throw new InvalidInputException(
+                    "Error: Input cannot be null."
+            );
+        }
         for (Command cmd : cmdToExecute) {
             try {
                 cmd.execute();

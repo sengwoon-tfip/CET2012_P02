@@ -1,6 +1,7 @@
 package Command;
 
 import Receiver.Receiver;
+import Utils.InvalidInputException;
 
 /**
  * Concrete command that displays all entries from the receiver's data store.
@@ -29,6 +30,11 @@ public class ListCommand implements Command {
      */
     @Override
     public void execute() {
+        if (this.receiver == null) {
+            throw new InvalidInputException(
+                    "Error: Receiver cannot be null."
+            );
+        }
         System.out.println("List");
         this.receiver.list();
     }
