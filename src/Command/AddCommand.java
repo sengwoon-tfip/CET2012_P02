@@ -15,11 +15,11 @@ import Receiver.Receiver;
  */
 public class AddCommand implements Command {
 
-    /** Parameters required for the add operation, space-separated. */
-    private final String params;
-
     /** The receiver that actually performs the add operation. */
     private final Receiver receiver;
+
+    /** Parameters required for the add operation, space-separated. */
+    private final String params;
 
     /**
      * Constructs an {@code AddCommand} with the specified receiver and

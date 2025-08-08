@@ -15,11 +15,11 @@ import Receiver.Receiver;
  */
 public class UpdateCommand implements Command {
 
-    /** Parameters required for the update operation. */
-    private final String params;
-
     /** The receiver that actually performs the update operation. */
     private final Receiver receiver;
+
+    /** Parameters required for the update operation. */
+    private final String params;
 
     /** Backup of the data before the update, used for undo. */
     private String previousData;
