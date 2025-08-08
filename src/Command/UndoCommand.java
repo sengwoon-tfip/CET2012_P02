@@ -48,7 +48,7 @@ public class UndoCommand implements Command {
      */
     @Override
     public void undo() {
-        System.out.println("Undo command cannot be undone.");
+//        System.out.println("Undo command cannot be undone.");
     }
 
     /**

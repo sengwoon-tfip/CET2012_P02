@@ -60,15 +60,15 @@ public class AddCommand implements Command {
     public void execute() {
         String[] inputs = params.split(" ");
         if (inputs.length != 3) {
-            throw new InvalidInputException("Entry addition not successful: " +
+            throw new InvalidInputException("Error: Addition not successful: " +
                     "invalid number of parameters.");
         }
         if (!InputValidator.validate_email(inputs[2])) {
-            throw new InvalidInputException("Entry addition not successful: " +
+            throw new InvalidInputException("Error: Addition not successful: " +
                     "invalid email format.");
         }
         this.receiver.add(params);
-        System.out.println("Added line " + params + ".");
+        System.out.println("Add");
     }
 
     /**
@@ -82,7 +82,7 @@ public class AddCommand implements Command {
     @Override
     public void undo() {
         receiver.delete(receiver.getDataEntries().size() - 1);
-        System.out.println("Undo command for add executed successfully.");
+        System.out.println("Undo");
     }
 
     /**

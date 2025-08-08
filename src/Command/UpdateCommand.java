@@ -63,7 +63,7 @@ public class UpdateCommand implements Command {
     public void execute() {
         String[] inputs = params.split(" ");
         if ((inputs.length == 0) || (inputs.length > 4)) {
-            throw new InvalidInputException("Update command provided with " +
+            throw new InvalidInputException("Error: Update command provided with " +
                     "invalid number of parameters.");
         }
 
@@ -81,7 +81,7 @@ public class UpdateCommand implements Command {
         );
 
         receiver.update(index, newData);
-        System.out.println("Entry updated successfully.");
+        System.out.println("Update");
     }
 
     /**
@@ -96,7 +96,7 @@ public class UpdateCommand implements Command {
         String[] inputs = params.split(" ");
         int index = Integer.parseInt(inputs[0]) - 1;
         receiver.update(index, this.previousData.split(" "));
-        System.out.println("Undo command for update executed successfully.");
+        System.out.println("Undo");
     }
 
     /**
