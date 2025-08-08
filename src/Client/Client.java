@@ -15,19 +15,31 @@ public class Client {
         Stack<Command> history = new Stack<Command>();
 
         AddCommand add = new AddCommand(
-                rcvr, "John Pork jo@pig.com"
-        );
-        AddCommand add2 = new AddCommand(
-                rcvr, "Tom Cat tc@cat.com"
-        );
-        UpdateCommand update = new UpdateCommand(
-                rcvr, "1 John Dog jp@dog.com"
+                rcvr, "First_name Last_name Email"
         );
         ListCommand list = new ListCommand(rcvr);
-        DeleteCommand delete = new DeleteCommand(rcvr, "f");
+        AddCommand add2 = new AddCommand(
+                rcvr, "John Doe simple@example.com"
+        );
+        AddCommand add3 = new AddCommand(
+                rcvr, "Hanna Moon tetter.tots@potatoesarelife.com"
+        );
+        AddCommand add4 = new AddCommand(
+                rcvr, "Ah Boon green-tea@teaforlife.com"
+        );
+        UpdateCommand update = new UpdateCommand(
+                rcvr, "3 Adam"
+        );
+        UpdateCommand update2 = new UpdateCommand(
+                rcvr, "1 blue bell ice-cream@alaskaFields.org"
+        );
+        DeleteCommand delete = new DeleteCommand(rcvr, "1");
         UndoCommand undo = new UndoCommand(rcvr, history);
         Command[] commands = {
-                add, add2, update, undo, list, delete, list
+                add, add2, add3, add4, list,
+                update, list, update2, list,
+                delete, list,
+                undo, list
         };
 
         invoker.setCommandsForExecution(commands);
