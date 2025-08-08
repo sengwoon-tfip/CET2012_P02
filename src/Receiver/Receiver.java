@@ -73,6 +73,7 @@ public class Receiver {
      * Prints all data entries with a numbered prefix (starting at 1).
      */
     public void list() {
+        System.out.println("List");
         for (int i = 0; i < this.dataEntries.size(); i++) {
             System.out.printf("%02d. %s\n", i + 1, this.dataEntries.get(i));
         }
