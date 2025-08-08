@@ -33,19 +33,22 @@ public class UpdateCommand implements Command {
      * parameters.
      *
      * <p>If four parameters are provided, the fourth is assumed to be an email
-     * address and is validated using {@link InputValidator#validate_email(String)}.</p>
+     * address and is validated using
+     * {@link InputValidator#validate_email(String)}.</p>
      *
      * @param receiver the receiver responsible for executing the update
      * @param params a space-separated string of update parameters:
      *               <ul>
-     *                 <li>First element: index (1-based) of the entry to update</li>
+     *                 <li>First element: index (1-based) of the entry to
+     *                 update</li>
      *                 <li>Following elements: new data values</li>
      *                 <li>Optional fourth element: email which must be valid if
      *                     present</li>
      *               </ul>
      * @throws InvalidInputException if an email is present but invalid
      */
-    public UpdateCommand(Receiver receiver, String params) throws InvalidInputException {
+    public UpdateCommand(Receiver receiver, String params)
+    throws InvalidInputException {
         this.receiver = receiver;
         this.params = params;
     }
@@ -73,27 +76,40 @@ public class UpdateCommand implements Command {
     @Override
     public void execute() {
         String[] inputs = params.split(" ");
-        if (inputs.length == 0 || inputs.length > 4) {
+        if (inputs.length <= 1) {
             throw new InvalidInputException(
-                    "Error: Update command provided with invalid number of parameters.");
+                "Error: Not enough parameters for update."
+            );
         }
-
+        if (inputs.length > 4) {
+            throw new InvalidInputException(
+                "Error: Too many parameters for update."
+            );
+        }
         if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])) {
             throw new InvalidInputException(
-                    "Invalid email format for update command.");
+                "Invalid email format for update command."
+            );
         }
 
         int index = Integer.parseInt(inputs[0]) - 1;
+
+        if (index < 0 || index >= receiver.getDataEntries().size()) {
+            throw new InvalidInputException(
+                "Error: Index out of bounds."
+            );
+        }
+
         this.previousData = receiver.getDataEntries().get(index);
 
         // Extract new data components (excluding index)
         String[] newData = new String[inputs.length - 1];
-        System.arraycopy(inputs, 1, newData, 0, inputs.length - 1);
+        System.arraycopy(
+                inputs, 1, newData, 0, inputs.length - 1
+        );
 
         // Capitalise first two new data elements if available
-        if (newData.length > 0) {
-            newData[0] = WordFormatter.capitalise(newData[0]);
-        }
+        newData[0] = WordFormatter.capitalise(newData[0]);
         if (newData.length > 1) {
             newData[1] = WordFormatter.capitalise(newData[1]);
         }

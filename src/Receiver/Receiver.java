@@ -41,19 +41,6 @@ public class Receiver {
      * @param inputs array of strings representing fields to update (max 3)
      */
     public void update(int index, String[] inputs) {
-        if (inputs.length < 1) {
-            System.out.println("Error: Not enough parameters for update.");
-            return;
-        }
-        if (inputs.length > 3) {
-            System.out.println("Error: Too many parameters for update.");
-            return;
-        }
-        if (index < 0 || index >= this.dataEntries.size()) {
-            System.out.println("Error: Index out of bounds.");
-            return;
-        }
-
         String[] fields = this.dataEntries.get(index).split(" ", -1);
 
         if (!inputs[0].isEmpty()) {
