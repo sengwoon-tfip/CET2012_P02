@@ -32,6 +32,9 @@ public class InputValidator {
             "[a-z]{2,3}" +
             "$"
     );
+
+    /** Regex pattern used for validating Latin letters (case-insensitive),
+     * digits 0 to 9 and underscores. */
     private static final Pattern STRING_PATTERN = Pattern.compile(
             "[a-zA-Z0-9_]{1,}"
     );
@@ -44,6 +47,7 @@ public class InputValidator {
      *   <li>Contain only alphanumeric characters, '.', '-', and '_'</li>
      *   <li>Have a valid domain and suffix (e.g. example.com)</li>
      * </ul>
+     * </p>
      *
      * @param email the email address to validate
      * @return {@code true} if the email matches the pattern;
@@ -53,6 +57,17 @@ public class InputValidator {
         if (email.isEmpty()) return false;
         return EMAIL_PATTERN.matcher(email).matches();
     }
+
+    /**
+     * Validates a string against a custom pattern.
+     *
+     * <p>The string must consist only of latin letters (case-insensitive),
+     * digits 0 to 9 and underscores.</p>
+     *
+     * @param string the string to validate
+     * @return {@code true} if the string matches the pattern;
+     *         {@code false} otherwise
+     */
     public static boolean validate_string(String string) {
         if (string.isEmpty()) return false;
         return STRING_PATTERN.matcher(string).matches();
