@@ -104,7 +104,17 @@ public class UpdateCommand implements Command {
             );
         }
 
-        int index = Integer.parseInt(inputs[0]) - 1;
+        int index;
+
+        try {
+            index = Integer.parseInt(inputs[0]) - 1;
+        }
+        catch (NumberFormatException e) {
+            throw new InvalidInputException(
+                "Invalid index number for update command."
+            );
+        }
+
 
         if (index < 0 || index >= receiver.getDataEntries().size()) {
             throw new InvalidInputException(

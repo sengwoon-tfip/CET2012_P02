@@ -35,7 +35,7 @@ public class Client {
                 new AddCommand(rcvr, "name1 name2 e__mail@email.com"),  // valid
                 new AddCommand(rcvr, "name1 name2 EMAIL@EMAIL.com"),    // valid
                 new AddCommand(rcvr, "name1 name2 EMAIL@E.MAIL.com"),   // valid
-                new AddCommand(rcvr, "name1 name2 EMAIL@E-MAIL.com"),   // valid
+//                new DeleteCommand(rcvr, "1.2"),   // valid
 //                new UndoCommand(rcvr, history),
 //                new UndoCommand(rcvr, history),
 //                new UndoCommand(rcvr, history),
@@ -55,7 +55,7 @@ public class Client {
 //                new UndoCommand(rcvr, history),
 //                new UndoCommand(rcvr, history),
                 new ListCommand(rcvr),
-                new UpdateCommand(rcvr, "100 jean luc jean.luc@domain.com"),
+                new UpdateCommand(rcvr, "10.6 jean luc jean.luc@domain.com"),
                 new UpdateCommand(rcvr, "2 aLiCe McDoNaLd alice@domain.com"),
                 new ListCommand(rcvr),
                 new ListCommand(rcvr)
