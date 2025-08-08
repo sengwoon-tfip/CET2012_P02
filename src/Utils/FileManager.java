@@ -15,7 +15,7 @@ public class FileManager {
     /**
      * File path to read and store data for long-term storage.
      */
-    private static final Path filepath = Paths.get("src/dataStore.txt");
+    private final Path filepath = Paths.get("src/dataStore.txt");
 
     /**
      * Loads entries from the data file into a list.
@@ -24,7 +24,7 @@ public class FileManager {
      * @return an ArrayList of trimmed strings representing each data line,
      *         or null if an error occurred
      */
-    public static ArrayList<String> loadFromFile() {
+    public ArrayList<String> loadFromFile() {
         try {
             if (Files.notExists(filepath)) {
                 Files.createFile(filepath);
@@ -54,7 +54,7 @@ public class FileManager {
      *
      * @param dataEntries list of strings to write to file
      */
-    public static void storeToFile(ArrayList<String> dataEntries) {
+    public void saveToFile(ArrayList<String> dataEntries) {
         try {
             Files.write(
                     filepath,

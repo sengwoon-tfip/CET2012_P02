@@ -1,7 +1,6 @@
 package Receiver;
 
 import Utils.FileManager;
-
 import java.util.ArrayList;
 
 /**
@@ -15,13 +14,14 @@ import java.util.ArrayList;
  */
 public class Receiver {
     private final ArrayList<String> dataEntries;
+    private final FileManager fileManager = new FileManager();
 
     /**
      * Constructs a Receiver instance, initializing data storage and loading
      * data entries from the file.
      */
     public Receiver() {
-        this.dataEntries = FileManager.loadFromFile();
+        this.dataEntries = fileManager.loadFromFile();
     }
 
     /**
@@ -113,5 +113,13 @@ public class Receiver {
      */
     public ArrayList<String> getDataEntries() {
         return dataEntries;
+    }
+
+    /**
+     * Stores the current data entries to the data file,
+     * overwriting previous content.
+     */
+    public void storeToFile() {
+        fileManager.saveToFile(this.dataEntries);
     }
 }

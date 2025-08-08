@@ -2,7 +2,6 @@ package Client;
 
 import Command.*;
 import Utils.InvalidInputException;
-import Utils.FileManager;
 import Invoker.Invoker;
 import Receiver.Receiver;
 
@@ -65,6 +64,6 @@ public class Client {
 
         invoker.setCommandsForExecution(commands);
         invoker.executeCommand(history);
-        FileManager.storeToFile(rcvr.getDataEntries());
+        rcvr.storeToFile();
     }
 }
