@@ -29,6 +29,7 @@ public class ListCommand implements Command {
      */
     @Override
     public void execute() {
+        System.out.println("List");
         this.receiver.list();
     }
 
