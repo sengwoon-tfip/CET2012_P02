@@ -1,6 +1,7 @@
 package Command;
 
 import java.util.Stack;
+import Receiver.Receiver;
 
 /**
  * Concrete command that triggers the undo operation on the receiver.
@@ -12,15 +13,19 @@ import java.util.Stack;
  */
 public class UndoCommand implements Command {
 
+    /** The receiver that actually performs the add operation. */
+    private final Receiver receiver;
+
     /** The stack to contain the history of executed (undoable) commands*/
     private final Stack<Command> history;
 
     /**
-     * Constructs an {@code UndoCommand} with the specified receiver.
+     * Constructs an {@code UndoCommand} with the sperrcified receiver.
      *
      * @param history the stack to contain the history of executed commands
      */
-    public UndoCommand(Stack<Command> history) {
+    public UndoCommand(Receiver receiver, Stack<Command> history) {
+        this.receiver = receiver;
         this.history = history;
     }
 

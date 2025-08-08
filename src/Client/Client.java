@@ -21,13 +21,13 @@ public class Client {
                 rcvr, "Tom Cat tc@cat.com"
         );
         UpdateCommand update = new UpdateCommand(
-                rcvr, "1 John Dog jp@dog.com hhh"
+                rcvr, "1 John Dog jp@dog.com"
         );
         ListCommand list = new ListCommand(rcvr);
-        DeleteCommand delete = new DeleteCommand(rcvr, "10");
-        UndoCommand undo = new UndoCommand(history);
+        DeleteCommand delete = new DeleteCommand(rcvr, "f");
+        UndoCommand undo = new UndoCommand(rcvr, history);
         Command[] commands = {
-                add, add2, list, update, undo, list, delete, undo, undo
+                add, add2, update, undo, list, delete, list
         };
 
         invoker.setCommandsForExecution(commands);
