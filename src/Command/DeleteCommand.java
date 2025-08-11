@@ -52,12 +52,12 @@ public class DeleteCommand implements Command {
         try {
             if (this.receiver == null) {
                 throw new InvalidInputException(
-                        "Error: Receiver cannot be null."
+                        "Error: Receiver cannot be null, deletion not successful."
                 );
             }
             if (this.index == null) {
                 throw new InvalidInputException(
-                        "Error: Input cannot be null."
+                        "Error: Input cannot be null, deletion not successful."
                 );
             }
             this.numIndex = Integer.parseInt(this.index);
@@ -72,7 +72,7 @@ public class DeleteCommand implements Command {
         }
         catch (NumberFormatException e) {
             throw new InvalidInputException("Error: index provided is not a " +
-                    "number");
+                    "number, deletion not successful.");
         }
     }
 

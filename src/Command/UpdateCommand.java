@@ -77,30 +77,30 @@ public class UpdateCommand implements Command {
     public void execute() {
         if (this.receiver == null) {
             throw new InvalidInputException(
-                    "Error: Receiver cannot be null."
+                    "Error: Receiver cannot be null, update not successful."
             );
         }
         if (params == null) {
             throw new InvalidInputException(
-                    "Error: Input cannot be null."
+                    "Error: Input cannot be null, update not successful."
             );
         }
 
         String[] inputs = params.split(" ");
         if (inputs.length <= 1) {
             throw new InvalidInputException(
-                "Error: Not enough parameters for update."
+                "Error: Not enough parameters, update not successful."
             );
         }
         if (inputs.length > 4) {
             throw new InvalidInputException(
-                "Error: Too many parameters for update."
+                "Error: Too many parameters, update not successful."
             );
         }
         if (inputs.length == 4 && !InputValidator.validate_email(inputs[3])
         && !InputValidator.validate_string(inputs[3])) {
             throw new InvalidInputException(
-                "Invalid email format for update command."
+                "Invalid email format, update not successful."
             );
         }
 
@@ -111,14 +111,14 @@ public class UpdateCommand implements Command {
         }
         catch (NumberFormatException e) {
             throw new InvalidInputException(
-                "Invalid index number for update command."
+                "Invalid index number, update not successful."
             );
         }
 
 
         if (index < 0 || index >= receiver.getDataEntries().size()) {
             throw new InvalidInputException(
-                "Error: Index out of bounds."
+                "Error: Index out of bounds, update not successful."
             );
         }
 

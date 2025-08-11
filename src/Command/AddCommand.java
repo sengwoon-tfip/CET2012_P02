@@ -75,23 +75,25 @@ public class AddCommand implements Command {
     public void execute() {
         if (this.receiver == null) {
             throw new InvalidInputException(
-                    "Error: Receiver cannot be null."
+                    "Error: Receiver cannot be null, add not successful."
             );
         }
         if (this.params == null) {
             throw new InvalidInputException(
-                    "Error: Input cannot be null."
+                    "Error: Input cannot be null, add not successful."
             );
         }
         String[] inputs = this.params.split(" ");
         if (inputs.length != 3) {
             throw new InvalidInputException(
-                    "Error: Addition not successful: invalid number of parameters.");
+                    "Error: Addition not successful: invalid number of " +
+                    "parameters, add not successful.");
         }
         if (!InputValidator.validate_email(inputs[2])
                 && !InputValidator.validate_string(inputs[2])) {
             throw new InvalidInputException(
-                    "Error: Addition not successful: invalid email format.");
+                    "Error: Addition not successful: invalid email format, " +
+                    "add not successful.");
         }
         inputs[0] = WordFormatter.capitalise(inputs[0]);
         inputs[1] = WordFormatter.capitalise(inputs[1]);
