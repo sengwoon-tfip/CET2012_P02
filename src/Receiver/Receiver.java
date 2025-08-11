@@ -13,7 +13,14 @@ import java.util.ArrayList;
  * file.</p>
  */
 public class Receiver {
+    /**
+     * List of data entries.
+     */
     private final ArrayList<String> dataEntries;
+
+    /**
+     * File manager to read from and write to file.
+     */
     private final FileManager fileManager = new FileManager();
 
     /**
